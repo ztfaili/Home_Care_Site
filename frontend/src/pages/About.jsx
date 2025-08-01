@@ -1,4 +1,4 @@
-import { Container, VStack, Text, Box, Heading } from "@chakra-ui/react"
+import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center } from "@chakra-ui/react"
 import { keyframes } from "@emotion/react";
 
 const growLine = keyframes`
@@ -51,13 +51,12 @@ const About = () => {
                 Testimonials
             </Text> */}
         <VStack spacing={12} align="center" textAlign="center">
-            <Box position={"relative"} mb={8}
-                // borderBottom={"2px solid #0db5d6"} witdth="100%" mb={8}
-            >
+            <Box position={"relative"} mb={8}>
                 <Heading 
                     as="h1" 
                     size="2xl" 
                     textShadow={"2px 2px 4px rgba(0, 0, 0, 0.3)"}
+                    zIndex={-1}
                 >
                     About Us And Our Team
                 </Heading>
@@ -85,6 +84,60 @@ const About = () => {
                     care tailored to their unique needs. Our highly trained staff is commited to delivering the best possible care with 
                     compassion, respect, and integrity.
                 </Text>
+            </Box>
+            <Box>
+                <Text fontSize="3xl" fontWeight="bold">
+                    Our Staff
+                </Text>
+                <Text fontSize="lg" mt={4} maxW="3xl" mx="auto">
+                    Our team is composed of highly trained and compassionate professionals who are dedicated to providing the best care possible. 
+                    Each member of our staff undergoes rigorous training and background checks to ensure that they meet our high standards of care. 
+                    We believe in continuous education and support for our team, enabling them to stay updated with the latest in healthcare practices.
+                </Text>
+            </Box>
+            <Box>
+                <HStack spacing={4} justifyContent="center" mt={8}>
+                    <Card maxW="sm">
+                        <Center mt={4}>
+                            <Image
+                                borderRadius='full'
+                                boxSize='150px'
+                                src='https://images.stockcake.com/public/a/e/f/aef9d768-6abd-4bde-8a44-e0c7b99740ef_medium/confident-medical-professional-stockcake.jpg'
+                                alt='John Doe'
+                                justifyContent={"center"}
+                            />
+                        </Center>
+                        <CardHeader>
+                            <Heading size="md">John Doe</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text>Lead Caregiver</Text>
+                        </CardBody>
+                        <CardFooter>
+                            <Text>10 years of experience in home care.</Text>
+                        </CardFooter>
+                    </Card>
+                    <Card maxW="sm">
+                        <Center mt={4}>
+                            <Image
+                                borderRadius='full'
+                                boxSize='150px'
+                                src='https://headshots-inc.com/wp-content/uploads/2021/01/Professional-Headshot-Examples-31-1.jpg'
+                                alt='Jane Smith'
+                                justifyContent={"center"}
+                            />
+                        </Center>
+                        <CardHeader>
+                            <Heading size="md">Jane Smith</Heading>
+                        </CardHeader>
+                        <CardBody>
+                            <Text>Nurse Practitioner</Text>
+                        </CardBody>
+                        <CardFooter>
+                            <Text>Specializes in geriatric care.</Text>
+                        </CardFooter>
+                    </Card>
+                </HStack>
             </Box>
         </VStack>
     </Container>

@@ -16,6 +16,7 @@ const Navbar = () => {
       top={0} 
       left={0} 
       right={0} 
+      zIndex={1000}
     > 
         <Flex 
             h={16}
