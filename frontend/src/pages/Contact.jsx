@@ -1,20 +1,57 @@
-import {Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useColorModeValue } from "@chakra-ui/react";
+import {Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast} from "@chakra-ui/react";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { growLine } from "../components/LineAnimation";
+import { useState } from "react";
+import Bottom from "../components/Bottom";
+
+
 
 const Contact = () => {
-  const inputBg = useColorModeValue("white", "gray.700");
+  const [input, setInput] = useState({
+    email: '',
+    name: '',
+    phone: '',
+    message: ''
+  });
+  const toast = useToast();
+  const submmitForm = (e) => {
+    console.log(input);
+    e.preventDefault(); // prevents page refresh
+    // basic validation
+    const isError = input.email === '' || input.name === '' || input.phone === '' || input.message === '';
+    if (isError) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      })
+    } else {
+      toast({
+        title: "Success",
+        description: "Form submitted successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      })
+    }
+  };
 
   return (
     <Container maxW="container.lg" py={20}>
       <VStack spacing={8} textAlign="center">
         <Box>
-          <Heading size="2xl" mb={2}>
+          <Heading 
+            size="2xl" 
+            mb={2} 
+            textShadow={"2px 2px 4px rgba(86, 84, 84, 0.3)"}
+          >
             Contact Us
           </Heading>
           <Box
             height="4px"
-            width="300px"  
+            width="280px"  
             bg="blue.500"
             mx="auto"
             borderRadius="30px 30px 30px 30px"
@@ -32,7 +69,7 @@ const Contact = () => {
           {/* Contact Form */}
           <Box
             as="form"
-            bg={inputBg}
+            bg={"white"}
             p={8}
             borderRadius="md"
             boxShadow="md"
@@ -41,17 +78,41 @@ const Contact = () => {
             <VStack spacing={6}>
               <FormControl isRequired>
                 <FormLabel>Name</FormLabel>
-                <Input placeholder="Your Name" />
+                <Input
+                  type="text" 
+                  placeholder="Your Name" 
+                  value={input.name}
+                  onChange={(e) => setInput({...input, name: e.target.value})}
+                />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Email</FormLabel>
-                <Input type="email" placeholder="your@email.com" />
+                <Input 
+                  type="email" 
+                  placeholder="your@email.com" 
+                  value={input.email} 
+                  onChange={(e) => setInput({...input, email: e.target.value})} 
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Phone</FormLabel>
+                <Input 
+                  type="tel" 
+                  placeholder="Phone Number" 
+                  value={input.phone} 
+                  onChange={(e) => setInput({...input, phone: e.target.value})} 
+                />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Message</FormLabel>
-                <Textarea placeholder="Your message..." rows={6} />
+                <Textarea 
+                  placeholder="Your message..." 
+                  rows={6} 
+                  value={input.message} 
+                  onChange={(e) => setInput({...input, message: e.target.value})}
+                />
               </FormControl>
-              <Button colorScheme="blue" size="lg" w="full">
+              <Button colorScheme="blue" size="lg" w="full" onClick={submmitForm}>
                 Send Message
               </Button>
             </VStack>
@@ -73,6 +134,7 @@ const Contact = () => {
             </HStack>
           </VStack>
         </SimpleGrid>
+        <Bottom />
       </VStack>
     </Container>
   );

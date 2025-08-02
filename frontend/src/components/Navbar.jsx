@@ -1,9 +1,8 @@
-import { Container, Flex, Text, Button, HStack, useColorMode } from "@chakra-ui/react"
+import { Container, Flex, Text, Button, HStack } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 import { MdOutlineHealthAndSafety } from "react-icons/md";
 
 const Navbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Container
       maxW={"1600px"}

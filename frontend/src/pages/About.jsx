@@ -1,7 +1,6 @@
-import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid, Divider } from "@chakra-ui/react"
-import { FaSquareInstagram } from "react-icons/fa6";
-import { FaTwitter, FaFacebook } from "react-icons/fa";
+import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid } from "@chakra-ui/react"
 import { growLine } from "../components/LineAnimation";
+import Bottom from "../components/Bottom";
 
 
 const staffMembers = [
@@ -33,8 +32,7 @@ const About = () => {
                 <Heading 
                     as="h1" 
                     size="2xl" 
-                    textShadow={"2px 2px 4px rgba(0, 0, 0, 0.3)"}
-                    zIndex={-1}
+                    textShadow={"2px 2px 4px rgba(86, 84, 84, 0.3)"}
                 >
                     About Us And Our Team
                 </Heading>
@@ -124,21 +122,7 @@ const About = () => {
                     "I can't thank the team enough for their support during my recovery. They were always there when I needed them." - John D.
                 </Text>
             </Box>
-            <Divider borderColor={"gray.500"} width={"100%"}/>
-            <HStack spacing={14} mt={8}>
-                <a href="https://www.instagram.com/homecare" target="_blank" rel="noopener noreferrer">
-                    <FaSquareInstagram size={24} color="#E1306C" />
-                </a>
-                <a href="https://www.twitter.com/homecare" target="_blank" rel="noopener noreferrer">
-                    <FaTwitter size={24} color="#1DA1F2" />
-                </a>
-                <a href="https://www.facebook.com/homecare" target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={24} color="#1877F2" />
-                </a>
-            </HStack>
-            <Text fontSize="lg" color="gray.500">
-                © {new Date().getFullYear()} HomeCare. All rights reserved.
-            </Text>
+            <Bottom />
         </VStack>
     </Container>
   )
