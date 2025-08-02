@@ -1,4 +1,4 @@
-import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid } from "@chakra-ui/react"
+import { Container, VStack, Text, Box, Heading, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid } from "@chakra-ui/react"
 import { growLine } from "../components/LineAnimation";
 import Bottom from "../components/Bottom";
 

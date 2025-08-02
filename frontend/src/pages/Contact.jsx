@@ -1,4 +1,4 @@
-import {Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast} from "@chakra-ui/react";
+import {Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast, Image} from "@chakra-ui/react";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { growLine } from "../components/LineAnimation";
 import { useState } from "react";
@@ -119,7 +119,10 @@ const Contact = () => {
           </Box>
 
           {/* Contact Info */}
-          <VStack spacing={6} align="start" justify="center">
+          <VStack mt={"40"} spacing={6} align="start" justify="center">
+            <Image
+              src="https://plus.unsplash.com/premium_photo-1663054397533-2a3fb0cab5de?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG9tZSUyMGNhcmV8ZW58MHx8MHx8fDA%3D"
+            />
             <HStack spacing={4}>
               <Icon as={MdEmail} w={6} h={6} color="blue.500" />
               <Text fontSize="md">support@yourcompany.com</Text>
