@@ -44,22 +44,22 @@ const Navbar = () => {
             
           <HStack spacing={2} alignItems={"center"}>
             <Link to={"/services"}>
-              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"xl"}>
+              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"full"}>
                 Our Services
               </Button>
             </Link>
             <Link to={"/jobs"}>
-              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"xl"}>
+              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"full"}>
                 Jobs
               </Button>
             </Link>
             <Link to={"/about"}>
-              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"xl"}>
+              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"full"}>
                 About
               </Button>
             </Link>
             <Link to={"/contact"}>
-              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"xl"}>
+              <Button size={"lg"} colorScheme={"blue"} fontSize={"24"} rounded={"full"}>
                 Contact Us
               </Button>
             </Link>

@@ -1,18 +1,8 @@
 import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid, Divider } from "@chakra-ui/react"
-import { keyframes } from "@emotion/react";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { FaTwitter, FaFacebook } from "react-icons/fa";
+import { growLine } from "../components/LineAnimation";
 
-const growLine = keyframes`
-  from {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  to {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-`;
 
 const staffMembers = [
     {
@@ -55,6 +45,7 @@ const About = () => {
                     height="4px"
                     width="120%"
                     bg="blue.500"
+                    borderRadius={"30px 30px 30px 30px"}
                     transformOrigin="left"
                     animation={`${growLine} 2s ease-out forwards`}
                 />
