@@ -1,7 +1,5 @@
 import { Container, Flex, Text, Button, HStack, useColorMode } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
-import { IoMoon } from "react-icons/io5"
-import { LuSun } from "react-icons/lu"
 import { MdOutlineHealthAndSafety } from "react-icons/md";
 
 const Navbar = () => {
@@ -29,14 +27,16 @@ const Navbar = () => {
         >
           <HStack spacing={2}>
             <Text
-              fontSize={{ base: "22", sm: "38"}}
+              fontSize={{ base: "15", sm: "38"}}
               fontWeight={"bold"}
-              // textTransform={"uppercase"}
+              whiteSpace={"nowrap"}
               textAlign={"center"}
               bgGradient={"linear(to-r, cyan.400, blue.500)"}
               bgClip={"text"}
             >
-              <Link to={"/"}>Home Care</Link>
+              <Link to={"/"}>
+                Home Care
+              </Link>
             </Text>
             <MdOutlineHealthAndSafety size="38" color="#0db5d6" style={{ position: 'relative', top: '2px' }}/>
           </HStack>
@@ -63,9 +63,6 @@ const Navbar = () => {
                 Contact Us
               </Button>
             </Link>
-            {/* <Button onClick={toggleColorMode}>
-              {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
-            </Button> */}
           </HStack>
         </Flex>
     </Container>

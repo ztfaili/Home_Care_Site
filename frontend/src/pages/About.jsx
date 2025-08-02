@@ -1,5 +1,7 @@
-import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center } from "@chakra-ui/react"
+import { Container, VStack, Text, Box, Heading, HStack, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid, Divider } from "@chakra-ui/react"
 import { keyframes } from "@emotion/react";
+import { FaSquareInstagram } from "react-icons/fa6";
+import { FaTwitter, FaFacebook } from "react-icons/fa";
 
 const growLine = keyframes`
   from {
@@ -12,44 +14,30 @@ const growLine = keyframes`
   }
 `;
 
+const staffMembers = [
+    {
+        name: "John Doe",
+        title: "Lead Caregiver",
+        desc: "10 years of experience in home care.",
+        img: "https://images.stockcake.com/public/a/e/f/aef9d768-6abd-4bde-8a44-e0c7b99740ef_medium/confident-medical-professional-stockcake.jpg",
+    },
+    {
+        name: "Jane Smith",
+        title: "Nurse Practitioner",
+        desc: "Specializes in geriatric care.",
+        img: "https://headshots-inc.com/wp-content/uploads/2021/01/Professional-Headshot-Examples-31-1.jpg",
+    },
+    {
+        name: "Lisa Miller",
+        title: "Physical Therapist",
+        desc: "Expert in mobility and rehabilitation.",
+        img: "https://images.stockcake.com/public/c/5/c/c5cc9ab7-005f-415e-b471-e9c612fef21b_medium/confident-medical-professional-stockcake.jpg",
+    },
+];
+
 const About = () => {
   return (
     <Container maxW="container.xl" py={20}> 
-        {/* <Box 
-            position="absolute" 
-            top="100px" 
-            left="100px" 
-            p={4} 
-            textShadow={"2px 2px 4px rgba(0, 0, 0, 0.3)"}
-            zIndex={1}
-        >
-            <Heading as={"h1"} size="2xl" mb={8}>
-                About Us And Our Team
-            </Heading>
-        </Box>
-        <Box spacing={8} py={40} position="absolute" top="50px" left="50px">
-            <Text
-                fontSize={"30"}
-                fontWeight={"bold"}
-                textAlign={"center"}
-            >
-                Our Mission
-            </Text>
-        </Box>
-            {/* <Text
-                fontSize={"30"}
-                fontWeight={"bold"}
-                textAlign={"center"}
-            >
-                Our Staff
-            </Text>
-            <Text
-                fontSize={"30"}
-                fontWeight={"bold"}
-                textAlign={"center"}
-            >
-                Testimonials
-            </Text> */}
         <VStack spacing={12} align="center" textAlign="center">
             <Box position={"relative"} mb={8}>
                 <Heading 
@@ -96,49 +84,70 @@ const About = () => {
                 </Text>
             </Box>
             <Box>
-                <HStack spacing={4} justifyContent="center" mt={8}>
-                    <Card maxW="sm">
-                        <Center mt={4}>
-                            <Image
-                                borderRadius='full'
-                                boxSize='150px'
-                                src='https://images.stockcake.com/public/a/e/f/aef9d768-6abd-4bde-8a44-e0c7b99740ef_medium/confident-medical-professional-stockcake.jpg'
-                                alt='John Doe'
-                                justifyContent={"center"}
-                            />
-                        </Center>
-                        <CardHeader>
-                            <Heading size="md">John Doe</Heading>
-                        </CardHeader>
-                        <CardBody>
-                            <Text>Lead Caregiver</Text>
-                        </CardBody>
-                        <CardFooter>
-                            <Text>10 years of experience in home care.</Text>
-                        </CardFooter>
-                    </Card>
-                    <Card maxW="sm">
-                        <Center mt={4}>
-                            <Image
-                                borderRadius='full'
-                                boxSize='150px'
-                                src='https://headshots-inc.com/wp-content/uploads/2021/01/Professional-Headshot-Examples-31-1.jpg'
-                                alt='Jane Smith'
-                                justifyContent={"center"}
-                            />
-                        </Center>
-                        <CardHeader>
-                            <Heading size="md">Jane Smith</Heading>
-                        </CardHeader>
-                        <CardBody>
-                            <Text>Nurse Practitioner</Text>
-                        </CardBody>
-                        <CardFooter>
-                            <Text>Specializes in geriatric care.</Text>
-                        </CardFooter>
-                    </Card>
-                </HStack>
+                <SimpleGrid 
+                    columns={{ base: 1, md: 3 }} 
+                    spacing={10} 
+                    mt={8}
+                >
+                    {staffMembers.map((staff, index) => (
+                        <Card
+                            key={index}
+                            maxW="sm"
+                            borderRadius="lg"
+                            boxShadow="lg"
+                            transition="transform 0.3s, box-shadow 0.3s"
+                            _hover={{
+                                transform: "translateY(-5px)",
+                                boxShadow: "2xl",
+                            }}
+                        >
+                            <Center mt={6}>
+                                <Image
+                                borderRadius="full"
+                                boxSize="120px"
+                                src={staff.img}
+                                alt={staff.name}
+                                />
+                            </Center>
+                            <CardHeader textAlign="center">
+                                <Heading size="md">{staff.name}</Heading>
+                            </CardHeader>
+                            <CardBody textAlign="center" color="gray.600">
+                                <Text fontWeight="medium">{staff.title}</Text>
+                            </CardBody>
+                            <CardFooter textAlign="center" justifyContent="center">
+                                <Text fontSize="sm" color="gray.500">{staff.desc}</Text>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </SimpleGrid>
             </Box>
+            <Box>
+                <Text fontSize="3xl" fontWeight="bold">
+                    Testimonials
+                </Text>
+                <Text fontSize="lg" mt={4} maxW="3xl" mx="auto">
+                    "The care my mother received was exceptional. The staff was attentive, compassionate, and truly made a difference in her quality of life." - Sarah L.
+                </Text>
+                <Text fontSize="lg" mt={4} maxW="3xl" mx="auto">
+                    "I can't thank the team enough for their support during my recovery. They were always there when I needed them." - John D.
+                </Text>
+            </Box>
+            <Divider borderColor={"gray.500"} width={"100%"}/>
+            <HStack spacing={14} mt={8}>
+                <a href="https://www.instagram.com/homecare" target="_blank" rel="noopener noreferrer">
+                    <FaSquareInstagram size={24} color="#E1306C" />
+                </a>
+                <a href="https://www.twitter.com/homecare" target="_blank" rel="noopener noreferrer">
+                    <FaTwitter size={24} color="#1DA1F2" />
+                </a>
+                <a href="https://www.facebook.com/homecare" target="_blank" rel="noopener noreferrer">
+                    <FaFacebook size={24} color="#1877F2" />
+                </a>
+            </HStack>
+            <Text fontSize="lg" color="gray.500">
+                © {new Date().getFullYear()} HomeCare. All rights reserved.
+            </Text>
         </VStack>
     </Container>
   )

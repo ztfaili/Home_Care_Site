@@ -14,10 +14,11 @@ const HomePage = () => {
             Home Page
         </Text>
       </VStack>
+      
+      {/* <Button onClick={toggleColorMode}>
+            Toggle {colorMode === 'light' ? 'Dark' : 'Light'} Mode
+      </Button> */}
     </Container>
-    // <Button onClick={toggleColorMode}>
-    //       Toggle {colorMode === 'light' ? 'Dark' : 'Light'} Mode
-    // </Button>
   )
 }
 
