@@ -1,24 +1,50 @@
 import { useColorMode, Button, Container, VStack, Text, Box, Image, Flex } from '@chakra-ui/react';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const MotionImage = motion(Image);
+
+const images = [
+  "https://homebase.org/wp-content/uploads/2022/05/NEW-website-hero-images-13.png",
+  "https://www.nurseregistry.com/wp-content/uploads/2023/07/in-home-nursing-care-for-seniors-1200x720.jpg",
+  "https://transform.octanecdn.com/crop/1920x1080/https://octanecdn.com/empathenginesites/empathenginesites_403144387.jpeg?focal=60,19",
+]
 
 const HomePage = () => {
   // const { colorMode, toggleColorMode } = useColorMode();
+  const [currentImage, setCurrentImage] = useState(0);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const interval = setInterval(() => { // change image every 5 seconds
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000); 
 
+    return () => clearInterval(interval); // cleanup function to clear the interval
+  }, []);
   return (
-    <Box position="rekative" minHeight="100vh" bgGradient="linear(to-r, blue.500, purple.500)" color="white">
-      <Image 
-          // src="https://cdn.aarp.net/content/dam/aarp/caregiving/2020/05/1140x655-grandpa-son-grandson-walking.jpg"
-          src="https://homebase.org/wp-content/uploads/2022/05/NEW-website-hero-images-13.png" 
-          alt="Home Image" 
-          borderRadius="md" mb={8} 
-          boxSize={"100%"}
-          objectFit="cover"
-          zIndex={-1}
-          py={10}
-      />
+    <Box position="relative" minHeight="100vh" bgColor="gray.100">
+      <Box position="relative" width="100vw" height="100vh" overflow="hidden">
+        <AnimatePresence mode="wait">
+          <MotionImage 
+            key={images[currentImage]}
+            src={images[currentImage]}
+            alt="Home Image" 
+            borderRadius="md" mb={8} 
+            boxSize={"100%"}
+            objectFit="cover"
+            zIndex={-1}
+            py={10}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut"}}
+          />
+        </AnimatePresence>
+      </Box>
       <Text
         position="absolute"
-        top="10%"
-        left="10%"
+        top="5%"
+        left="5%"
         color="blackAlpha.700" // Adjust text color for visibility
         fontSize="7xl"
         fontWeight="bold"
@@ -28,8 +54,8 @@ const HomePage = () => {
       </Text>
       <Text
         position="absolute"
-        top="15%"
-        left="15%"
+        top="10%"
+        left="10%"
         color="blackAlpha.800" // Adjust text color for visibility
         fontSize="7xl"
         fontWeight="bold"
@@ -37,7 +63,14 @@ const HomePage = () => {
       >
         Care Services
       </Text>
-      <Flex flexWrap={"wrap"} justifyContent="center" alignItems="center" position="relative">
+      <Flex 
+        flexWrap={"wrap"} 
+        justifyContent="center" 
+        alignItems="center" 
+        position="relative" 
+        bgGradient="linear(to-r, blue.500, purple.500)" 
+        py={"10"}
+      >
         <Text
           fontSize="7xl"
           fontWeight="bold"
@@ -45,13 +78,11 @@ const HomePage = () => {
           color="white"
           ml={5}
         >
-          Providing Quality Care Every Step of the Way
+          Providing Quality Care For You and Your Loved Ones
         </Text>
       </Flex>
-      <Container maxW="container.xl" py={30}>
-        
-        
-        {/* <VStack spacing={8}>
+      <Container maxW="container.xl" py={30} />
+      {/* <VStack spacing={8}>
           <Text
               fontSize={"30"}
               fontWeight={"bold"}
@@ -64,7 +95,9 @@ const HomePage = () => {
         {/* <Button onClick={toggleColorMode}>
               Toggle {colorMode === 'light' ? 'Dark' : 'Light'} Mode
         </Button> */}
-      </Container>
+        <Box minHeight="50vh" bgColor="#ede1d1">
+
+        </Box>
     </Box>
   )
 }

@@ -1,6 +1,7 @@
 import { Container, VStack, Text, Box, Heading, Card, CardHeader, CardBody, CardFooter, Image, Center, SimpleGrid } from "@chakra-ui/react"
 import { growLine } from "../components/LineAnimation";
 import Bottom from "../components/Bottom";
+import { useEffect } from "react";
 
 
 const staffMembers = [
@@ -25,6 +26,7 @@ const staffMembers = [
 ];
 
 const About = () => {
+  useEffect(() => window.scrollTo(0, 0), []);
   return (
     <Container maxW="container.xl" py={20}> 
         <VStack spacing={12} align="center" textAlign="center">

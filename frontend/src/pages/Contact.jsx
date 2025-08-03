@@ -3,10 +3,11 @@ import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { growLine } from "../components/LineAnimation";
 import { useState } from "react";
 import Bottom from "../components/Bottom";
-
+import { useEffect } from "react";
 
 
 const Contact = () => {
+  useEffect(() => window.scrollTo(0, 0), []);
   const [input, setInput] = useState({
     email: '',
     name: '',
@@ -119,7 +120,8 @@ const Contact = () => {
           </Box>
 
           {/* Contact Info */}
-          <VStack mt={"40"} spacing={6} align="start" justify="center">
+          <VStack mt={"10"} spacing={8} align="start" justify="center">
+            <Heading size="lg">Shoot us a message!</Heading>
             <Image
               src="https://plus.unsplash.com/premium_photo-1663054397533-2a3fb0cab5de?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG9tZSUyMGNhcmV8ZW58MHx8MHx8fDA%3D"
             />

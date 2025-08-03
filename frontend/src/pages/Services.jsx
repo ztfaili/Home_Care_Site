@@ -1,6 +1,8 @@
 import { Container, VStack, Text } from "@chakra-ui/react"
+import { useEffect } from "react";
 
 const Services = () => {
+  useEffect(() => window.scrollTo(0, 0), []);
   return (
     <Container maxW="container.md" py={20}>
         <VStack spacing={8}>
