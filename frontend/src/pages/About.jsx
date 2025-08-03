@@ -3,6 +3,9 @@ import { growLine } from "../components/LineAnimation";
 import Bottom from "../components/Bottom";
 import { useEffect } from "react";
 
+{window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}};
 
 const staffMembers = [
     {
@@ -25,7 +28,9 @@ const staffMembers = [
     },
 ];
 
+
 const About = () => {
+  
   useEffect(() => window.scrollTo(0, 0), []);
   return (
     <Container maxW="container.xl" py={20}> 

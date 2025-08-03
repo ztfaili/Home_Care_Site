@@ -1,10 +1,13 @@
-import {Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast, Image} from "@chakra-ui/react";
+import { Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast, Image } from "@chakra-ui/react";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { growLine } from "../components/LineAnimation";
 import { useState } from "react";
 import Bottom from "../components/Bottom";
 import { useEffect } from "react";
 
+{window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+}};
 
 const Contact = () => {
   useEffect(() => window.scrollTo(0, 0), []);
