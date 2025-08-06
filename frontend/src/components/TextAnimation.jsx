@@ -2,7 +2,11 @@ import { useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { motion } from "framer-motion";
 
-export const StaggeredFade = ({ text, className = '' }) => {
+export const StaggeredFade = ({ 
+  text, 
+  className = '',
+  ...rest
+}) => {
   const variants = {
     hidden: { opacity: 0 },
     show: (i) => ({
@@ -17,18 +21,19 @@ export const StaggeredFade = ({ text, className = '' }) => {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <motion.h2
+    <motion.span
       ref={ref}
       initial="hidden"
       animate={isInView ? 'show' : ''}
       variants={variants}
       viewport={{ once: true }}
+      {...rest}
     >
       {letters.map((letter, i) => (
         <motion.span key={`${letter}-${i}`} variants={variants} custom={i}>
           {letter}
         </motion.span>
       ))}
-    </motion.h2>
+    </motion.span>
   );
 };

@@ -1,10 +1,6 @@
 import { Container, VStack, Text } from "@chakra-ui/react"
 import { useEffect } from "react";
 
-{window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-}};
-
 const Jobs = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (

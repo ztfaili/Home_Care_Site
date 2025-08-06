@@ -5,14 +5,10 @@ import Bottom from './../components/Bottom';
 import { Link } from 'react-router-dom';
 import { StaggeredFade } from '../components/TextAnimation';
 
-{window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-}};
-
 const MotionImage = motion(Image);
 
 const heroImages = [
-  "https://homebase.org/wp-content/uploads/2022/05/NEW-website-hero-images-13.png",
+  "https://framerusercontent.com/images/K3vnSmUh1rgaYe4VoRaiADnwj0g.png",
   "https://www.woodlands-hh.com/wp-content/uploads/sites/24/2022/03/long-term-care.jpg",
   "https://transform.octanecdn.com/crop/1920x1080/https://octanecdn.com/empathenginesites/empathenginesites_403144387.jpeg?focal=60,19",
 ]
@@ -20,19 +16,19 @@ const heroImages = [
 const services = [
   {
     title: "Physical Therapy",
-    img: "https://integrehab.com/wp-content/uploads/2024/08/physical-therapist-exercising-knee.jpg"
+    img: "https://integrehab.com/wp-content/uploads/2024/08/physical-therapist-exercising-knee.jpg",
   },
   {
     title: "Occupational Therapy",
-    img: "https://monumenthg.com/wp-content/uploads/2024/09/How-does-occupational-therapy-work-for-seniors.jpg"    
+    img: "https://monumenthg.com/wp-content/uploads/2024/09/How-does-occupational-therapy-work-for-seniors.jpg",
   },
   {
     title: "Companionship",
-    img: "https://www.pacificangelshomecare.com/wp-content/uploads/2019/09/benefits-of-companionship-for-seniors.jpg"
+    img: "https://www.pacificangelshomecare.com/wp-content/uploads/2019/09/benefits-of-companionship-for-seniors.jpg",
   },
   {
     title: "Diet & Nutrition",
-    img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGlldHxlbnwwfHwwfHx8MA%3D%3D"
+    img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGlldHxlbnwwfHwwfHx8MA%3D%3D",
   },
 ]
 
@@ -123,10 +119,9 @@ const HomePage = () => {
             Explore Our Caregiving Services!
           </Heading>
           <HStack spacing={10} mb={10} px={5} wrap="wrap" justifyContent="center">
-            {services.map((services, index) => (
-              <Link to="/services">
+            {services.map((service, index) => (
+              <Link to="/services" key={index}>
                 <Card
-                  key={index}
                   maxW="sm"
                   borderRadius="lg"
                   boxShadow="lg"
@@ -137,9 +132,9 @@ const HomePage = () => {
                   }}
                   boxSize={"320px"}
                 >
-                  <Image src={services.img} width="100%" />
+                  <Image src={service.img} width="100%" />
                   <CardHeader textAlign="center">
-                    <Heading size="md">{services.title}</Heading>
+                    <Heading size="md">{service.title}</Heading>
                   </CardHeader>
                 </Card>
               </Link>

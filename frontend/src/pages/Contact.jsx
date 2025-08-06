@@ -5,10 +5,6 @@ import { useState } from "react";
 import Bottom from "../components/Bottom";
 import { useEffect } from "react";
 
-{window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-}};
-
 const Contact = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   const [input, setInput] = useState({
