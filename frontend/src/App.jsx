@@ -1,7 +1,5 @@
 import { Box, useColorModeValue } from "@chakra-ui/react"
 import { Routes, Route } from "react-router-dom"
-// import { APIProvider } from '@vis.gl/react-google-maps';
-// import GoogleMap from "./components/GoogleMap";
 
 import HomePage from "./pages/HomePage"
 import Navbar from "./components/Navbar"
@@ -14,9 +12,6 @@ function App() {
   return (
     <>
       <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
-        {/* <APIProvider apiKey="AIzaSyAfPs5ZRHzBeMEsMhuYziBnTEZztg40W9A">
-          <GoogleMap />
-        </APIProvider> */}
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />

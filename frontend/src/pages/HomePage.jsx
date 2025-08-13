@@ -1,4 +1,4 @@
-import { VStack, Text, Box, Image, Flex, Heading, Card, CardHeader, CardBody, CardFooter, SimpleGrid, Center, HStack } from '@chakra-ui/react';
+import { VStack, Text, Box, Image, Flex, Heading, Card, CardHeader, CardBody, CardFooter, SimpleGrid, Center, HStack, Button } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Bottom from './../components/Bottom';
@@ -15,11 +15,13 @@ const heroImages = [
 
 const services = [
   {
-    title: "Physical Therapy",
-    img: "https://integrehab.com/wp-content/uploads/2024/08/physical-therapist-exercising-knee.jpg",
+    // title: "Physical Therapy",
+    // img: "https://integrehab.com/wp-content/uploads/2024/08/physical-therapist-exercising-knee.jpg",
+    title: "Bedside Care",
+    img: "https://online.utulsa.edu/images/769fc384-2406-473f-8def-f8cd24024db3.jpg"
   },
   {
-    title: "Occupational Therapy",
+    title: "Mobility & Exercise",
     img: "https://monumenthg.com/wp-content/uploads/2024/09/How-does-occupational-therapy-work-for-seniors.jpg",
   },
   {
@@ -33,7 +35,6 @@ const services = [
 ]
 
 const HomePage = () => {
-  // const { colorMode, toggleColorMode } = useColorMode();
   const [currentImage, setCurrentImage] = useState(0);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,13 +46,13 @@ const HomePage = () => {
   }, []);
   return (
     <Box position="relative" minHeight="100vh" bgColor="gray.100">
-      <Box position="relative" width="100vw" height="100vh" overflow="hidden">
+      <Box position="relative" width="100%" height="100vh" overflow="hidden">
         <AnimatePresence mode="wait">
           <MotionImage 
             key={heroImages[currentImage]}
             src={heroImages[currentImage]}
             alt="Home Image" 
-            borderRadius="md" mb={8} 
+            mb={8} 
             boxSize={"100%"}
             objectFit="cover"
             zIndex={-1}
@@ -84,6 +85,26 @@ const HomePage = () => {
       >
         Care Services
       </Text>
+      <Link to="/services/schedule">
+        <Button
+          position="absolute"
+          top="18%"
+          left="12%"
+          zIndex={1}
+          colorScheme={"red"} 
+          fontSize={"44"}
+          height={"100px"} 
+          width={"370px"} 
+          rounded={"full"} 
+          _hover={{ 
+            bg: "green.600",
+            transform: "scale(1.05)", 
+            transition: "all 0.2s ease-in-out", 
+          }}
+        >
+          Schedule Now
+        </Button>
+      </Link>
       <Image
         position="absolute"
         top="5%"
@@ -141,6 +162,17 @@ const HomePage = () => {
             ))}
         </HStack>
         </VStack>
+      </Box>
+      <Box minHeight="70vh" bgColor="white">
+        <Text
+          fontSize="4xl"
+          fontWeight="bold"
+          textAlign="Left"
+          color="black"
+          ml={5}
+        >
+          Want to leave a review?
+        </Text>
       </Box>
       <Bottom/>
     </Box>
