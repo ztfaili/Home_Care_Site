@@ -5,11 +5,25 @@ import { useState } from "react";
 import Bottom from "../components/Bottom";
 import { useEffect } from "react";
 
+const createContact = async (newContact) => {
+  if(!newContact.name || !newContact.email || !newContact.phone || !newContact.message) {
+    return { success: false, message: "Please fill in all fields." };
+  }
+  const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newContact)
+  });
+  return { success: true, message: "Product created successfully!" };
+};
+
 const Contact = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   const [input, setInput] = useState({
-    email: '',
     name: '',
+    email: '',
     phone: '',
     message: ''
   });
@@ -36,6 +50,7 @@ const Contact = () => {
         isClosable: true,
       })
     }
+    createContact(input);
   };
 
   return (
