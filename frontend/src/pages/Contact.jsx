@@ -1,9 +1,10 @@
-import { Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast, Image } from "@chakra-ui/react";
+import { Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast, Image, InputGroup, InputLeftAddon, FormErrorMessage } from "@chakra-ui/react";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
 import { growLine } from "../components/LineAnimation";
 import { useState } from "react";
 import Bottom from "../components/Bottom";
 import { useEffect } from "react";
+import InputMask from "react-input-mask";
 
 const createContact = async (newContact) => {
   if(!newContact.name || !newContact.email || !newContact.phone || !newContact.message) {
@@ -19,6 +20,7 @@ const createContact = async (newContact) => {
   return { success: true, message: "Product created successfully!" };
 };
 
+
 const Contact = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   const [input, setInput] = useState({
@@ -27,12 +29,16 @@ const Contact = () => {
     phone: '',
     message: ''
   });
+  const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const [validPhone, setValidPhone] = useState(true); 
+  const [validEmail, setValidEmail] = useState(true);
+
   const toast = useToast();
-  const submmitForm = (e) => {
-    console.log(input);
+  const submmitForm = async (e) => {
     e.preventDefault(); // prevents page refresh
     // basic validation
-    const isError = input.email === '' || input.name === '' || input.phone === '' || input.message === '';
+    const isError = input.email === '' || input.name === '' || input.phone === '' || input.message === '' || !validPhone || !validEmail;
     if (isError) {
       toast({
         title: "Error",
@@ -40,17 +46,33 @@ const Contact = () => {
         status: "error",
         duration: 3000,
         isClosable: true,
-      })
-    } else {
+      });
+      return;
+    }
+    const result = await createContact(input);
+    if(result.success) {
       toast({
         title: "Success",
         description: "Form submitted successfully!",
         status: "success",
         duration: 3000,
         isClosable: true,
-      })
+      });
+      setInput({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Something went wrong.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
-    createContact(input);
   };
 
   return (
@@ -97,26 +119,50 @@ const Contact = () => {
                   type="text" 
                   placeholder="Your Name" 
                   value={input.name}
-                  onChange={(e) => setInput({...input, name: e.target.value})}
+                  onChange={(e) => {
+                      setInput({...input, name: e.target.value});
+                      
+                    }
+                  }
                 />
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!validEmail}>
                 <FormLabel>Email</FormLabel>
                 <Input 
                   type="email" 
                   placeholder="your@email.com" 
                   value={input.email} 
-                  onChange={(e) => setInput({...input, email: e.target.value})} 
+                  onChange={(e) => {
+                      setInput({...input, email: e.target.value})
+                      setValidEmail(emailRegex.test(e.target.value));
+                    }
+                  }
                 />
+                {!validEmail && <FormErrorMessage>Please enter a valid email address!</FormErrorMessage>}
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!validPhone}>
                 <FormLabel>Phone</FormLabel>
-                <Input 
-                  type="tel" 
-                  placeholder="Phone Number" 
-                  value={input.phone} 
-                  onChange={(e) => setInput({...input, phone: e.target.value})} 
-                />
+                <InputGroup>
+                  <InputLeftAddon>+1</InputLeftAddon>
+                  <InputMask
+                    mask="(999) 999-9999"
+                    value={input.phone}
+                    onChange={(e) => {
+                        setInput({ ...input, phone: e.target.value });
+                        setValidPhone(phoneRegex.test(e.target.value));
+                      }
+                    }
+                  >
+                    {(inputProps) => (
+                      <Input
+                        {...inputProps}
+                        type="tel"
+                        placeholder="(123) 456-7890"
+                      />
+                    )}
+                  </InputMask>
+                </InputGroup>
+                {!validPhone && <FormErrorMessage>Please enter a valid phone number!</FormErrorMessage>}
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Message</FormLabel>
