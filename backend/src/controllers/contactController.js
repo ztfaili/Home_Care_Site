@@ -3,10 +3,10 @@ import Contact from "../models/Contact.js";
 
 export const getAllMessages = async (req, res) => {
     try {
-        const messages = await Contact.find({}); // fetch all products from the database
+        const messages = await Contact.find({}); 
         return res.status(200).json({ success: true, data: messages }); // 200 means OK
     } catch (error) {
-        console.error("Error in fetching products:", error.message);
+        console.error("Error in fetching messages:", error.message);
         return res.status(500).json({ success: false, message: "Server Error" }); // 500 means server error
     }
 };
@@ -24,7 +24,7 @@ export const createContact = async (req, res) => {
         await newContact.save();
         return res.status(201).json({ success: true, data: newContact}) // 201 means something was created successfully
     } catch (error) {
-        console.error("Error in creating product:", error.message);
+        console.error("Error in creating contact:", error.message);
         return res.status(500).json({ success: false, message: error.message }); // 500 means server error
     }
 };

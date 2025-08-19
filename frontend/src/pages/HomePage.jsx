@@ -1,22 +1,33 @@
-import { VStack, Text, Box, Image, Flex, Heading, Card, CardHeader, CardBody, CardFooter, SimpleGrid, Center, HStack, Button } from '@chakra-ui/react';
+import { VStack, Text, Box, Image, Flex, Heading, Card, CardHeader, HStack, Button, useDisclosure, Input, Textarea, FormControl, FormLabel, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Bottom from './../components/Bottom';
 import { Link } from 'react-router-dom';
 import { StaggeredFade } from '../components/TextAnimation';
+import Stars from '../components/Stars';
+import { globalRating } from '../components/Stars';
+import { createReview } from '../services/review';
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react';
 
 const MotionImage = motion(Image);
 
 const heroImages = [
-  "https://framerusercontent.com/images/K3vnSmUh1rgaYe4VoRaiADnwj0g.png",
-  "https://www.woodlands-hh.com/wp-content/uploads/sites/24/2022/03/long-term-care.jpg",
   "https://transform.octanecdn.com/crop/1920x1080/https://octanecdn.com/empathenginesites/empathenginesites_403144387.jpeg?focal=60,19",
-]
+  "https://www.associatedhomecare.com/wp-content/uploads/sites/4/fly-images/1135/career-hero-1240x1000-cc.jpg",
+  "https://www.woodlands-hh.com/wp-content/uploads/sites/24/2022/03/long-term-care.jpg"
+];
 
 const services = [
   {
-    // title: "Physical Therapy",
-    // img: "https://integrehab.com/wp-content/uploads/2024/08/physical-therapist-exercising-knee.jpg",
     title: "Bedside Care",
     img: "https://online.utulsa.edu/images/769fc384-2406-473f-8def-f8cd24024db3.jpg"
   },
@@ -32,10 +43,9 @@ const services = [
     title: "Diet & Nutrition",
     img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGlldHxlbnwwfHwwfHx8MA%3D%3D",
   },
-]
+];
 
 const HomePage = () => {
-  const [currentImage, setCurrentImage] = useState(0);
   useEffect(() => {
     window.scrollTo(0, 0);
     const interval = setInterval(() => { // change image every 5 seconds
@@ -44,6 +54,57 @@ const HomePage = () => {
 
     return () => clearInterval(interval); // cleanup function to clear the interval
   }, []);
+
+  const [currentImage, setCurrentImage] = useState(0);
+  const { isOpen, onOpen, onClose } = useDisclosure(); // for modal
+  const [review, setReview] = useState({
+    rating: 0,
+    name: '',
+    content: ''
+  });
+
+  const toast = useToast();
+
+  const submitReview = async (e) => {
+    e.preventDefault();
+    const updatedReview = { ...review, rating: globalRating}; // updates the rating dynamically
+    const isError = updatedReview.name === '' || !updatedReview.content === '' || updatedReview.rating === 0;
+    if(isError) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    } 
+    const result = await createReview(updatedReview);
+    if(result.success) {
+      toast({
+        title: "Success",
+        description: "Review sent successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setReview({
+        rating: 0,
+        name: '',
+        content: ''
+      });
+      onClose();
+    } else {
+      toast({
+        title: "Error",
+        description: "Something went wrong.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
+  
   return (
     <Box position="relative" minHeight="100vh" bgColor="gray.100">
       <Box position="relative" width="100%" height="100vh" overflow="hidden">
@@ -67,10 +128,11 @@ const HomePage = () => {
         position="absolute"
         top="5%"
         left="5%"
-        color="blackAlpha.700" 
+        color="white" 
         fontSize="7xl"
         fontWeight="bold"
         zIndex={1} 
+        textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
       >
         Wisconsin Home
       </Text>
@@ -78,10 +140,11 @@ const HomePage = () => {
         position="absolute"
         top="9%"
         left="8%"
-        color="blackAlpha.800" 
+        color="white" 
         fontSize="7xl"
         fontWeight="bold"
         zIndex={1} 
+        textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
       >
         Care Services
       </Text>
@@ -89,7 +152,7 @@ const HomePage = () => {
         <Button
           position="absolute"
           top="18%"
-          left="12%"
+          left="10%"
           zIndex={1}
           colorScheme={"red"} 
           fontSize={"44"}
@@ -170,9 +233,49 @@ const HomePage = () => {
           textAlign="Left"
           color="black"
           ml={5}
+          mb={5}
         >
           Want to leave a review?
         </Text>
+        <Button ml={10} onClick={onOpen}>Review</Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Give us a review!</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Box display={"flex"} justifyContent={"center"} mb={8}>
+                <Stars iconSize={30}/>
+              </Box>
+              <VStack spacing={3}>
+                {/* <Box w="100%" textAlign="left">
+                  <Text>Name</Text>
+                </Box> */}
+                <FormControl>
+                  <FormLabel>Name</FormLabel>
+                  <Input 
+                    value={review.name}
+                    onChange={(e) => setReview({ ...review, name: e.target.value})} 
+                  />
+                </FormControl>
+                
+                <FormControl>
+                  <FormLabel>Review</FormLabel>
+                  <Textarea 
+                    value={review.content}
+                    onChange={(e) => setReview({ ...review, content: e.target.value})} 
+                  />
+                </FormControl>
+              </VStack>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={submitReview}>
+                Post
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
       <Bottom/>
     </Box>

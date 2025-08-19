@@ -5,21 +5,7 @@ import { useState } from "react";
 import Bottom from "../components/Bottom";
 import { useEffect } from "react";
 import InputMask from "react-input-mask";
-
-const createContact = async (newContact) => {
-  if(!newContact.name || !newContact.email || !newContact.phone || !newContact.message) {
-    return { success: false, message: "Please fill in all fields." };
-  }
-  const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newContact)
-  });
-  return { success: true, message: "Product created successfully!" };
-};
-
+import { createContact } from "../services/contact";
 
 const Contact = () => {
   useEffect(() => window.scrollTo(0, 0), []);
@@ -35,7 +21,7 @@ const Contact = () => {
   const [validEmail, setValidEmail] = useState(true);
 
   const toast = useToast();
-  const submmitForm = async (e) => {
+  const submitForm = async (e) => {
     e.preventDefault(); // prevents page refresh
     // basic validation
     const isError = input.email === '' || input.name === '' || input.phone === '' || input.message === '' || !validPhone || !validEmail;
@@ -121,7 +107,6 @@ const Contact = () => {
                   value={input.name}
                   onChange={(e) => {
                       setInput({...input, name: e.target.value});
-                      
                     }
                   }
                 />
@@ -173,7 +158,7 @@ const Contact = () => {
                   onChange={(e) => setInput({...input, message: e.target.value})}
                 />
               </FormControl>
-              <Button colorScheme="blue" size="lg" w="full" onClick={submmitForm}>
+              <Button colorScheme="blue" size="lg" w="full" onClick={submitForm}>
                 Send Message
               </Button>
             </VStack>
