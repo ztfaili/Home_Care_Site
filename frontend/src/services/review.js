@@ -11,3 +11,9 @@ export const createReview = async (newReview) => {
   });
   return { success: true, message: "Review created successfully!" };
 }
+
+export const getReviews = async () => {
+  const res = await fetch("/api/reviews");
+  const data = await res.json();
+  return { success: true, data: data.data } 
+}

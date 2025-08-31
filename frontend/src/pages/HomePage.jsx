@@ -7,6 +7,8 @@ import { StaggeredFade } from '../components/TextAnimation';
 import Stars from '../components/Stars';
 import { globalRating } from '../components/Stars';
 import { createReview } from '../services/review';
+import { getReviews } from '../services/review';
+import Slider from "react-slick";
 
 import {
   Modal,
@@ -29,7 +31,7 @@ const heroImages = [
 const services = [
   {
     title: "Bedside Care",
-    img: "https://online.utulsa.edu/images/769fc384-2406-473f-8def-f8cd24024db3.jpg"
+    img: "https://lh7-us.googleusercontent.com/wGSKTa4xIhHsgCzHExHR7wgZIy0UL_tmyUboU70tiHnv8Hr3qSDdLrYgmKJjdDXza5ANlTeL5YWvnfwztwatMTFaB2HK4b2FQRsXonfrujW9PzalALF274zJL7RDla_OdDS0livrYLdlwjj9Y9h2M-o"
   },
   {
     title: "Mobility & Exercise",
@@ -45,14 +47,52 @@ const services = [
   },
 ];
 
+const sliderSettings = {
+  // dots: true,
+  infinite: true,
+  speed: 5000,
+  slidesToShow: 3,
+  // slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 0,
+  pauseOnHover: false,
+  centerMode: false,
+  draggable: false,
+  swipe: false,
+  cssEase: "linear",
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+      },
+    },
+  ],
+};
+
 const HomePage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const interval = setInterval(() => { // change image every 5 seconds
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
     }, 5000); 
-
     return () => clearInterval(interval); // cleanup function to clear the interval
+  }, []);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const result = await getReviews();
+      if (result.success) {
+        setReviews(result.data); // Adjust based on your API's return shape
+      }
+    };
+    fetchReviews();
   }, []);
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -62,13 +102,14 @@ const HomePage = () => {
     name: '',
     content: ''
   });
+  const [reviews, setReviews] = useState([]);
 
   const toast = useToast();
 
   const submitReview = async (e) => {
     e.preventDefault();
     const updatedReview = { ...review, rating: globalRating}; // updates the rating dynamically
-    const isError = updatedReview.name === '' || !updatedReview.content === '' || updatedReview.rating === 0;
+    const isError = updatedReview.name === '' || updatedReview.content === '' || updatedReview.rating === 0;
     if(isError) {
       toast({
         title: "Error",
@@ -123,61 +164,79 @@ const HomePage = () => {
             transition={{ duration: 1, ease: "easeInOut" }}
           />
         </AnimatePresence>
-      </Box>
-      <Text
-        position="absolute"
-        top="5%"
-        left="5%"
-        color="white" 
-        fontSize="7xl"
-        fontWeight="bold"
-        zIndex={1} 
-        textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
-      >
-        Wisconsin Home
-      </Text>
-      <Text
-        position="absolute"
-        top="9%"
-        left="8%"
-        color="white" 
-        fontSize="7xl"
-        fontWeight="bold"
-        zIndex={1} 
-        textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
-      >
-        Care Services
-      </Text>
-      <Link to="/services/schedule">
-        <Button
+        <Box 
           position="absolute"
-          top="18%"
-          left="10%"
-          zIndex={1}
-          colorScheme={"red"} 
-          fontSize={"44"}
-          height={"100px"} 
-          width={"370px"} 
-          rounded={"full"} 
-          _hover={{ 
-            bg: "green.600",
-            transform: "scale(1.05)", 
-            transition: "all 0.2s ease-in-out", 
-          }}
+          top="0"
+          left="0" 
+          display="flex"
+          width="100%"
         >
-          Schedule Now
-        </Button>
-      </Link>
-      <Image
-        position="absolute"
-        top="5%"
-        right="5%"
-        src="https://t4.ftcdn.net/jpg/03/35/98/45/240_F_335984544_im2SjLS6UfXCdOpjw8Lhp7rs7k9zCfWl.jpg"
-        alt="Wisconsin Logo"
-        boxSize="140px"
-        zIndex={1} 
-        borderRadius="full"
-      />
+          <Flex
+            width="100%"
+            height="100%"
+            alignItems="center"
+            justifyContent="space-between"
+            px={10}
+            zIndex={1}
+            py={20}
+            mt={8}
+          >
+            <VStack>
+              <Text
+                color="white" 
+                fontSize="7xl"
+                fontWeight="bold"
+                zIndex={2} 
+                textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
+              >
+                Wisconsin Home
+              </Text>
+              <Text
+                color="white" 
+                fontSize="7xl"
+                fontWeight="bold"
+                zIndex={1} 
+                textShadow="0px 2px 4px rgba(0, 0, 0, 0.6)"
+                mb={25}
+              >
+                Care Services
+              </Text>
+              <Link to="/services">
+                <Button
+                  zIndex={1}
+                  colorScheme={"red"} 
+                  fontSize={"44"}
+                  height={"100px"} 
+                  width={"370px"} 
+                  rounded={"full"} 
+                  _hover={{ 
+                    bg: "green.600",
+                    transform: "scale(1.05)", 
+                    transition: "all 0.2s ease-in-out", 
+                  }}
+                >
+                  Schedule Now
+                </Button>
+              </Link>
+            </VStack>
+            <Image
+              src="src/images/daisyhills.png"
+              alt="Wisconsin Logo"
+              boxSize="440px"
+              zIndex={1} 
+              borderRadius="full"
+              mr={-55}
+              mt={-20}
+            />
+          </Flex>
+          
+        </Box>
+        
+      </Box>
+
+      
+      
+      
       <Flex 
         flexWrap={"wrap"} 
         justifyContent="center" 
@@ -199,7 +258,7 @@ const HomePage = () => {
       
       <Box minHeight="70vh" bgColor="#ede1d1">
         <VStack>
-          <Heading size="2xl" mt={10} mb={5}>
+          <Heading size="2xl" mt={10} mb={10}>
             Explore Our Caregiving Services!
           </Heading>
           <HStack spacing={10} mb={10} px={5} wrap="wrap" justifyContent="center">
@@ -227,17 +286,26 @@ const HomePage = () => {
         </VStack>
       </Box>
       <Box minHeight="70vh" bgColor="white">
-        <Text
-          fontSize="4xl"
-          fontWeight="bold"
-          textAlign="Left"
-          color="black"
-          ml={5}
-          mb={5}
-        >
-          Want to leave a review?
-        </Text>
-        <Button ml={10} onClick={onOpen}>Review</Button>
+        <VStack pt={10}>
+          <Text
+            fontSize="4xl"
+            fontWeight="bold"
+            textAlign="Left"
+            color="gray.700"
+            ml={5}
+            mb={5}
+          >
+            Share Your Experience
+          </Text>
+          <Text fontSize="lg" color="gray.600" mb={5} maxW="500px">
+            Give us feedback so that we may continue to improve.
+          </Text>
+          <Button ml={10} mb={10} onClick={onOpen} 
+            size={"lg"} fontSize={"22px"} 
+          >
+            Review
+          </Button>
+        </VStack>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
@@ -248,9 +316,6 @@ const HomePage = () => {
                 <Stars iconSize={30}/>
               </Box>
               <VStack spacing={3}>
-                {/* <Box w="100%" textAlign="left">
-                  <Text>Name</Text>
-                </Box> */}
                 <FormControl>
                   <FormLabel>Name</FormLabel>
                   <Input 
@@ -262,6 +327,7 @@ const HomePage = () => {
                 <FormControl>
                   <FormLabel>Review</FormLabel>
                   <Textarea 
+                    resize={"none"}
                     value={review.content}
                     onChange={(e) => setReview({ ...review, content: e.target.value})} 
                   />
@@ -271,11 +337,48 @@ const HomePage = () => {
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={submitReview}>
-                Post
+                Post Review
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
+        <Box py={10} px={5}>
+          <Text
+            fontSize="5xl"
+            fontWeight="bold"
+            ml={10}
+            mb={65}
+            textAlign="center" color="blue.600"
+          >
+            <StaggeredFade text="What Families Are Saying About Us" />
+          </Text>
+          {reviews.length === 0 ? (
+            <Text align={"center"}>No reviews yet. Be the first to leave one!</Text>
+          ) : (
+            <Slider {...sliderSettings}>
+              {reviews.map((r, i) => (
+                <Box 
+                  flexShrink="0"
+                  key={i}
+                  p={5}
+                  shadow="md"
+                  borderWidth="1px"
+                  borderRadius="md"
+                  bg="white"
+                  width="100%"
+                  maxW="300px"
+                  mb={6}
+                >
+                  <Flex justifyContent="space-between" alignItems="center" mb={2}>
+                    <Text fontWeight="bold">{r.name}</Text>
+                    <Stars defaultRating={r.rating} iconSize={20} />
+                  </Flex>
+                  <Text>{r.content}</Text>
+                </Box>
+              ))}
+            </Slider>
+          )}
+        </Box>
       </Box>
       <Bottom/>
     </Box>

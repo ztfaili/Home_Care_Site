@@ -29,7 +29,7 @@ const About = () => {
   
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <Container maxW="container.xl" py={20}> 
+    <Container maxW="container.xl" py={20} mt={8}> 
         <VStack spacing={12} align="center" textAlign="center">
             <Box position={"relative"} mb={8}>
                 <Heading 

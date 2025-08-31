@@ -4,7 +4,7 @@ import { useEffect } from "react";
 const Jobs = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <Container maxW="container.md" py={20}>
+    <Container maxW="container.md" py={20} mt={8}>
         <VStack spacing={8}>
             <Text
                 fontSize={"30"}

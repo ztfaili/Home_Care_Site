@@ -62,7 +62,7 @@ const Contact = () => {
   };
 
   return (
-    <Container maxW="container.lg" py={20}>
+    <Container maxW="container.lg" py={20} mt={8}>
       <VStack spacing={8} textAlign="center">
         <Box>
           <Heading 
@@ -152,6 +152,7 @@ const Contact = () => {
               <FormControl isRequired>
                 <FormLabel>Message</FormLabel>
                 <Textarea 
+                  resize={"none"}
                   placeholder="Your message..." 
                   rows={6} 
                   value={input.message} 
@@ -172,7 +173,7 @@ const Contact = () => {
             />
             <HStack spacing={4}>
               <Icon as={MdEmail} w={6} h={6} color="blue.500" />
-              <Text fontSize="md">support@yourcompany.com</Text>
+              <Text fontSize="md">support@daisyhills.com</Text>
             </HStack>
             <HStack spacing={4}>
               <Icon as={MdPhone} w={6} h={6} color="blue.500" />

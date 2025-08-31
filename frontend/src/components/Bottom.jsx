@@ -18,7 +18,7 @@ const Bottom = () => {
                 </a>
             </HStack>
             <Text fontSize="lg" color="gray.500">
-                © {new Date().getFullYear()} HomeCare. All rights reserved.
+                © {new Date().getFullYear()} Daisy Hills. All rights reserved.
             </Text>
         </VStack>
     </Container>

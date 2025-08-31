@@ -30,23 +30,39 @@ const Stars = ({defaultRating, color, iconSize}) => {
                     setRating(rating);
                     globalRating = rating;
                 };
-
-                return (
-                    <div 
-                        className="star" 
-                        key={index} 
-                        style={{
-                            fontSize: iconSize ? `${iconSize}px`: "14px", 
-                            color: elementColor,
-                            filter: `${isActiveColor ? "grayscale(0%)" : "grayscale(100%)"}`
-                        }}
-                        onMouseEnter={() => setTempRating(index + 1)}
-                        onMouseLeave={() => setTempRating(0)}
-                        onClick={() => handleClick(index + 1)}
-                    >
-                        {isActiveColor ? <FaStar/> : <CiStar/>}
-                    </div>
-                );
+                if(!(defaultRating > 0)) {
+                    return (
+                        <div 
+                            className="star" 
+                            key={index} 
+                            style={{
+                                fontSize: iconSize ? `${iconSize}px`: "14px", 
+                                color: elementColor,
+                                filter: `${isActiveColor ? "grayscale(0%)" : "grayscale(100%)"}`
+                            }}
+                            onMouseEnter={() => setTempRating(index + 1)}
+                            onMouseLeave={() => setTempRating(0)}
+                            onClick={() => handleClick(index + 1)}
+                        >
+                            {isActiveColor ? <FaStar/> : <CiStar/>}
+                        </div>
+                    );
+                }
+                else {
+                    return (
+                        <div 
+                            className="star" 
+                            key={index} 
+                            style={{
+                                fontSize: iconSize ? `${iconSize}px`: "14px", 
+                                color: elementColor,
+                                filter: `${isActiveColor ? "grayscale(0%)" : "grayscale(100%)"}`
+                            }}
+                        >
+                            {isActiveColor ? <FaStar/> : <CiStar/>}
+                        </div>
+                    );
+                }
             })}
         </div>
     )
