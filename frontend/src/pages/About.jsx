@@ -57,12 +57,11 @@ const About = () => {
                     Our Mission
                 </Text>
                 <Text fontSize="lg" mt={4} maxW="3xl" mx="auto">
-                    Our mission is to provide affordable, reliable, and personalized in-home care that empowers 
-                    individuals to live safely and comfortably in the place they know best—their own homes. 
-                    We are dedicated to preserving dignity, promoting independence, and enhancing quality of life for every client we serve. 
-                    We strive to be a trusted partner in health and wellness, ensuring that our clients receive the highest standard of 
-                    care tailored to their unique needs. Our highly trained staff is commited to delivering the best possible care with 
-                    compassion, respect, and integrity.
+                    Your home is your sanctuary—a place where you feel your best. Our mission is to provide compassionate, reliable, 
+                    and personalized in-home care that empowers individuals to live safely and comfortably in the place they know best—their 
+                    own homes. With our dedicated care, we assist with daily activities, encourage physical well-being through exercise, 
+                    and help you maintain your independence. Our goal is to keep you safe, active, and thriving in the comfort of your own 
+                    home—your haven, your peace. 
                 </Text>
             </Box>
             <Box>

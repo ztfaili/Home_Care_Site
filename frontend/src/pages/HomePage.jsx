@@ -229,14 +229,8 @@ const HomePage = () => {
               mt={-20}
             />
           </Flex>
-          
         </Box>
-        
       </Box>
-
-      
-      
-      
       <Flex 
         flexWrap={"wrap"} 
         justifyContent="center" 
@@ -255,7 +249,7 @@ const HomePage = () => {
           <StaggeredFade text="Providing Quality Care For You and Your Loved Ones" />
         </Text>
       </Flex>
-      
+                  
       <Box minHeight="70vh" bgColor="#ede1d1">
         <VStack>
           <Heading size="2xl" mt={10} mb={10}>

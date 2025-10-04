@@ -18,14 +18,19 @@ import {
   List,
   ListIcon,
   ListItem,
+  Checkbox, 
+  Portal, 
+  Select,
 } from "@chakra-ui/react";
+
 import { useEffect, useState } from "react";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { growLine } from "../components/LineAnimation";
 import GoogleMap from "../components/GoogleMap";
-import { IoMdFlower } from "react-icons/io";
 import { PiFlowerDuotone } from "react-icons/pi";
 import Bottom from "../components/Bottom";
+import { createService } from './../services/service';
+
 
 const Services = () => {
   useEffect(() => window.scrollTo(0, 0), []);
@@ -35,7 +40,8 @@ const Services = () => {
     email: "",
     phone: "",
     address: "",
-    serviceType: "",
+    serviceType: [],
+    relationship: "",
     notes: "",
   });
 
@@ -46,24 +52,62 @@ const Services = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You can replace this with API call logic
-    toast({
-      title: "Form submitted!",
-      description: "We will contact you shortly.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      serviceType: "",
-      notes: "",
-    });
+const handleCheckboxChange = (e) => {
+  const { value, checked } = e.target;
+
+  setFormData((prev) => {
+    const newServiceType = checked
+      ? [...prev.serviceType, value] // add if checked
+      : prev.serviceType.filter((type) => type !== value); // remove if unchecked
+
+    return {
+      ...prev,
+      serviceType: newServiceType,
+    };
+  });
+};
+
+  const submitForm = async (e) => {
+    e.preventDefault(); // prevents page refresh
+    // basic validation
+    const isError = formData.email === '' || formData.name === '' || formData.phone === '' || formData.message === '' || formData.address === '' || formData.serviceType.length === 0 || formData.relationship === '';
+    if (isError) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    const result = await createService(formData);
+    if(result.success) {
+      toast({
+        title: "Success",
+        description: "Form submitted successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        serviceType: [],
+        relationship: "",
+        notes: "",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Something went wrong.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -119,7 +163,7 @@ const Services = () => {
           <Heading size="lg" mb={4}>
             Sign Up for Home Care Services
           </Heading>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={submitForm}>
             <VStack spacing={4}>
               <FormControl isRequired>
                 <FormLabel>Full Name</FormLabel>
@@ -157,11 +201,59 @@ const Services = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Type of Service Needed</FormLabel>
-                <Input
-                  name="serviceType"
-                  value={formData.serviceType}
+                <HStack spacing={14}>
+                  <VStack align="start">
+                    <Checkbox
+                      name="serviceType" 
+                      value="Bedside Care" 
+                      onChange={handleCheckboxChange}
+                      isChecked={formData.serviceType.includes("Bedside Care")}
+                    >
+                      Bedside Care
+                    </Checkbox>
+                    <Checkbox
+                      name="serviceType" 
+                      value="Mobility" 
+                      onChange={handleCheckboxChange}
+                      isChecked={formData.serviceType.includes("Mobility")}
+                    >
+                      Mobility
+                    </Checkbox>
+                  </VStack>
+                  <VStack>
+                    <Checkbox
+                      name="serviceType" 
+                      value="Companionship" 
+                      onChange={handleCheckboxChange}
+                      isChecked={formData.serviceType.includes("Companionship")}
+                    >
+                      Companionship
+                    </Checkbox>
+                    <Checkbox
+                      name="serviceType" 
+                      value="Diet & Nutrition" 
+                      onChange={handleCheckboxChange}
+                      isChecked={formData.serviceType.includes("Diet & Nutrition")}
+                    >
+                      Diet & Nutrition
+                    </Checkbox>
+                  </VStack>
+                </HStack>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Relationship to Patient</FormLabel>
+                <Select
+                  name="relationship"
+                  placeholder="Select relationship"
+                  value={formData.relationship}
                   onChange={handleChange}
-                />
+                  multiple={false}
+                >
+                  <option value="Self">Self</option>
+                  <option value="Family">Family</option>
+                  <option value="Friend">Friend</option>
+                  <option value="Other">Other</option>
+                </Select>
               </FormControl>
               <FormControl>
                 <FormLabel>Additional Notes</FormLabel>
