@@ -70,7 +70,7 @@ const handleCheckboxChange = (e) => {
   const submitForm = async (e) => {
     e.preventDefault(); // prevents page refresh
     // basic validation
-    const isError = formData.email === '' || formData.name === '' || formData.phone === '' || formData.message === '' || formData.address === '' || formData.serviceType.length === 0 || formData.relationship === '';
+    const isError = formData.email === '' || formData.name === '' || formData.phone === '' || formData.notes === '' || formData.address === '' || formData.serviceType.length === 0 || formData.relationship === '';
     if (isError) {
       toast({
         title: "Error",
