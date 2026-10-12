@@ -1,5 +1,5 @@
 export const createContact = async (newContact) => {
-  if(!newContact.name || !newContact.email || !newContact.phone || !newContact.message) {
+  if(!newContact.fname || !newContact.lname || !newContact.email || !newContact.phone || !newContact.type || !newContact.message) {
     return { success: false, message: "Please fill in all fields." };
   }
   const res = await fetch("/api/contact", {

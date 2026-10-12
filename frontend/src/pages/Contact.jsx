@@ -1,139 +1,166 @@
-import { Container, Box, Heading, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, SimpleGrid, Icon, HStack, useToast, Image, InputGroup, InputLeftAddon, FormErrorMessage } from "@chakra-ui/react";
-import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
-import { growLine } from "../components/LineAnimation";
-import { useState } from "react";
-import Bottom from "../components/Bottom";
-import { useEffect } from "react";
+// Contact.jsx
+import { useState } from 'react';
+import {
+  Box,
+  Grid,
+  Flex,
+  VStack,
+  HStack,
+  Heading,
+  Text,
+  Link,
+  Input,
+  Textarea,
+  Select,
+  FormLabel,
+  Button,
+  useToast,
+  FormControl,
+  FormErrorMessage,
+  InputGroup,
+  InputLeftAddon,
+} from '@chakra-ui/react';
+import Reveal from './Reveal';
+import { SectionLabel, Em } from './DaisyHillsLanding';
+import { createContact } from '../services/contact';
 import InputMask from "react-input-mask";
-import { createContact } from "../services/contact";
 
-const Contact = () => {
-  useEffect(() => window.scrollTo(0, 0), []);
-  const [input, setInput] = useState({
-    name: '',
+
+const contactItems = [
+  { icon: '📞', label: 'Phone', value: '(262) 469-9609', href: 'tel:2624699609' },
+  { icon: '📠', label: 'Fax (Provider Referrals)', value: '(262) 810-2078' },
+  { icon: '✉️', label: 'Email', value: 'care@daisyhillshomecare.com', href: 'mailto:care@daisyhillshomecare.com' },
+  { icon: '📍', label: 'Service Area', value: 'Greater Milwaukee Area — private homes, assisted living & skilled nursing facilities' },
+];
+
+const fieldStyles = {
+  bg: 'warmWhite',
+  border: '1px solid',
+  borderColor: 'border',
+  borderRadius: '2px',
+  fontSize: '0.88rem',
+  color: 'charcoal',
+  _focus: { borderColor: 'sage.500', boxShadow: 'none' },
+};
+
+export function Contact() {
+  const toast = useToast();
+  const [form, setForm] = useState({
+    fname: '',
+    lname: '',
     email: '',
     phone: '',
-    message: ''
+    type: '',
+    message: '',
   });
+
   const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [validPhone, setValidPhone] = useState(true); 
   const [validEmail, setValidEmail] = useState(true);
 
-  const toast = useToast();
-  const submitForm = async (e) => {
-    e.preventDefault(); // prevents page refresh
-    // basic validation
-    const isError = input.email === '' || input.name === '' || input.phone === '' || input.message === '' || !validPhone || !validEmail;
-    if (isError) {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+  const handleChange = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  const handleSubmit = async () => {
+    if (!form.fname || !form.lname || !form.email || !form.phone || !form.type || !form.message || !validEmail || !validPhone) {
+      toast({ title: 'Please fill in all fields.', status: 'warning', duration: 4000, isClosable: true });
       return;
     }
-    const result = await createContact(input);
-    if(result.success) {
-      toast({
-        title: "Success",
-        description: "Form submitted successfully!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setInput({
-        name: '',
-        email: '',
-        phone: '',
-        message: ''
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Something went wrong.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+
+    try {
+      await createContact(form);
+
+      toast({ title: "Thank you! We'll be in touch with you shortly.", status: 'success', duration: 4000, isClosable: true });
+      setForm({ fname: '', lname: '', email: '', phone: '', type: '', message: '' });
+    } catch (err) {
+      toast({ title: 'Something went wrong. Please try again.', status: 'error', duration: 4000, isClosable: true });
     }
   };
 
   return (
-    <Container maxW="container.lg" py={20} mt={8}>
-      <VStack spacing={8} textAlign="center">
-        <Box>
-          <Heading 
-            size="2xl" 
-            mb={2} 
-            textShadow={"2px 2px 4px rgba(86, 84, 84, 0.3)"}
-          >
-            Contact Us
-          </Heading>
-          <Box
-            height="4px"
-            width="280px"  
-            bg="blue.500"
-            mx="auto"
-            borderRadius="30px 30px 30px 30px"
-            mb={4}
-            transformOrigin="left"
-            animation={`${growLine} 1.5s ease-out forwards`}
-          />
-          <Text fontSize="lg" maxW="xl" mx="auto" color="gray.600">
-            Have questions or need help? Fill out the form below and we'll get
-            back to you as soon as possible.
-          </Text>
-        </Box>
+    <Box as="section" id="contact" bg="warmWhite" px="8%" py="5rem">
+      <SectionLabel>Get In Touch</SectionLabel>
+      <Heading as="h2" fontFamily="heading" fontSize={{ base: '2rem', md: 'clamp(2rem, 3.5vw, 3rem)' }} fontWeight={300} lineHeight={1.2} mb={4}>
+        Ready to refer or <Em>get started?</Em>
+      </Heading>
 
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} w="full">
-          {/* Contact Form */}
-          <Box
-            as="form"
-            bg={"white"}
-            p={8}
-            borderRadius="md"
-            boxShadow="md"
-            w="full"
-          >
-            <VStack spacing={6}>
-              <FormControl isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  type="text" 
-                  placeholder="Your Name" 
-                  value={input.name}
-                  onChange={(e) => {
-                      setInput({...input, name: e.target.value});
-                    }
-                  }
-                />
-              </FormControl>
+      <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={{ base: 8, md: 20 }} mt={12} alignItems="start">
+        <VStack spacing={6} align="stretch">
+          <Text fontSize="0.95rem" fontWeight={300} color="mid" lineHeight={1.8} mb={2}>
+            Whether you're a patient, family member, or healthcare provider — we're here to help. Reach out
+            and we'll respond promptly.
+          </Text>
+          {contactItems.map((c, i) => (
+            <Reveal key={c.label} delay={i * 0.06}>
+              <Flex gap={4} align="flex-start" p={5} border="1px solid" borderColor="border" borderRadius="2px">
+                <Flex minW="40px" w="40px" h="40px" bg="cream" borderRadius="2px" align="center" justify="center" fontSize="1rem">
+                  {c.icon}
+                </Flex>
+                <Box>
+                  <Text fontSize="0.78rem" textTransform="uppercase" letterSpacing="0.1em" color="lightGray" mb={1}>
+                    {c.label}
+                  </Text>
+                  {c.href ? (
+                    <Link href={c.href} fontSize="0.92rem" color="charcoal" _hover={{ color: 'sage.dark', textDecoration: 'none' }}>
+                      {c.value}
+                    </Link>
+                  ) : (
+                    <Text fontSize="0.92rem" color="charcoal">
+                      {c.value}
+                    </Text>
+                  )}
+                </Box>
+              </Flex>
+            </Reveal>
+          ))}
+        </VStack>
+
+        <Reveal>
+          <Box bg="cream" border="1px solid" borderColor="border" borderRadius="3px" p={10}>
+            <Heading as="h3" fontFamily="heading" fontSize="1.6rem" fontWeight={400} mb={6}>
+              Send Us a Message
+            </Heading>
+
+            <Grid templateColumns={{ base: '1fr', sm: '1fr 1fr' }} gap={4}>
+              <Box>
+                <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">
+                  First Name
+                </FormLabel>
+                <Input placeholder="Jane" value={form.fname} onChange={handleChange('fname')} {...fieldStyles} />
+              </Box>
+              <Box>
+                <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">
+                  Last Name
+                </FormLabel>
+                <Input placeholder="Smith" value={form.lname} onChange={handleChange('lname')} {...fieldStyles} />
+              </Box>
+            </Grid>
+
+            <Box mt={4}>
               <FormControl isRequired isInvalid={!validEmail}>
-                <FormLabel>Email</FormLabel>
-                <Input 
-                  type="email" 
-                  placeholder="your@email.com" 
-                  value={input.email} 
-                  onChange={(e) => {
-                      setInput({...input, email: e.target.value})
-                      setValidEmail(emailRegex.test(e.target.value));
-                    }
-                  }
-                />
+                <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">
+                  Email
+                </FormLabel>
+                <Input type="email" placeholder="you@example.com" value={form.email} 
+                onChange={(e) => {
+                  setForm({...form, email: e.target.value})
+                  setValidEmail(emailRegex.test(e.target.value));
+                }}
+                {...fieldStyles} />
                 {!validEmail && <FormErrorMessage>Please enter a valid email address!</FormErrorMessage>}
               </FormControl>
+            </Box>
+
+            <Box mt={4}>
               <FormControl isRequired isInvalid={!validPhone}>
-                <FormLabel>Phone</FormLabel>
+                <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">Phone</FormLabel>
                 <InputGroup>
                   <InputLeftAddon>+1</InputLeftAddon>
                   <InputMask
                     mask="(999) 999-9999"
-                    value={input.phone}
+                    value={form.phone}
                     onChange={(e) => {
-                        setInput({ ...input, phone: e.target.value });
+                        setForm({ ...form, phone: e.target.value });
                         setValidPhone(phoneRegex.test(e.target.value));
                       }
                     }
@@ -149,46 +176,73 @@ const Contact = () => {
                 </InputGroup>
                 {!validPhone && <FormErrorMessage>Please enter a valid phone number!</FormErrorMessage>}
               </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Message</FormLabel>
-                <Textarea 
-                  resize={"none"}
-                  placeholder="Your message..." 
-                  rows={6} 
-                  value={input.message} 
-                  onChange={(e) => setInput({...input, message: e.target.value})}
-                />
-              </FormControl>
-              <Button colorScheme="blue" size="lg" w="full" onClick={submitForm}>
-                Send Message
-              </Button>
-            </VStack>
+            </Box>
+
+            <Box mt={4}>
+              <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">
+                I am a...
+              </FormLabel>
+              <Select placeholder="Select one" value={form.type} onChange={handleChange('type')} {...fieldStyles}>
+                <option>Patient or Family Member</option>
+                <option>Physician / Provider</option>
+                <option>Hospital Staff</option>
+                <option>Assisted Living / SNF</option>
+                <option>Other</option>
+              </Select>
+            </Box>
+
+            <Box mt={4} mb={6}>
+              <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">
+                Message
+              </FormLabel>
+              <Textarea placeholder="Tell us how we can help..." minH="100px" value={form.message} onChange={handleChange('message')} {...fieldStyles} />
+            </Box>
+
+            <Button variant="solid" w="100%" py="0.9rem" h="auto" onClick={handleSubmit}>
+              Send Message
+            </Button>
           </Box>
-
-          {/* Contact Info */}
-          <VStack mt={"10"} spacing={8} align="start" justify="center">
-            <Heading size="lg">Shoot us a message!</Heading>
-            <Image
-              src="https://plus.unsplash.com/premium_photo-1663054397533-2a3fb0cab5de?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG9tZSUyMGNhcmV8ZW58MHx8MHx8fDA%3D"
-            />
-            <HStack spacing={4}>
-              <Icon as={MdEmail} w={6} h={6} color="blue.500" />
-              <Text fontSize="md">support@daisyhills.com</Text>
-            </HStack>
-            <HStack spacing={4}>
-              <Icon as={MdPhone} w={6} h={6} color="blue.500" />
-              <Text fontSize="md">+1 (555) 123-4567</Text>
-            </HStack>
-            <HStack spacing={4}>
-              <Icon as={MdLocationOn} w={6} h={6} color="blue.500" />
-              <Text fontSize="md">123 Main Street, Your City, USA</Text>
-            </HStack>
-          </VStack>
-        </SimpleGrid>
-        <Bottom />
-      </VStack>
-    </Container>
+        </Reveal>
+      </Grid>
+    </Box>
   );
-};
+}
 
-export default Contact;
+export function Footer() {
+  return (
+    <Flex
+      as="footer"
+      bg="#1e1e1e"
+      color="rgba(255,255,255,0.5)"
+      px="8%"
+      py={12}
+      align="center"
+      justify="space-between"
+      flexWrap="wrap"
+      gap={6}
+      direction={{ base: 'column', sm: 'row' }}
+      textAlign={{ base: 'center', sm: 'left' }}
+    >
+      <Text fontFamily="heading" fontSize="1.6rem" fontWeight={600} color="rgba(255,255,255,0.85)">
+        Daisy Hills{' '}
+        <Text as="span" color="gold">
+          Home Care
+        </Text>
+      </Text>
+      <Text fontSize="0.78rem">© 2026 Daisy Hills Home Care · Greater Milwaukee Area · All rights reserved.</Text>
+      <HStack spacing={6}>
+        {['About', 'Services', 'Providers', 'Contact'].map((l) => (
+          <Link
+            key={l}
+            href={`#${l.toLowerCase()}`}
+            fontSize="0.78rem"
+            color="rgba(255,255,255,0.4)"
+            _hover={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none' }}
+          >
+            {l}
+          </Link>
+        ))}
+      </HStack>
+    </Flex>
+  );
+}
