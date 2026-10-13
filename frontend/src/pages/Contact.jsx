@@ -73,7 +73,7 @@ export function Contact() {
       toast({ title: "Thank you! We'll be in touch with you shortly.", status: 'success', duration: 4000, isClosable: true });
       setForm({ fname: '', lname: '', email: '', phone: '', type: '', message: '' });
     } catch (err) {
-      toast({ title: 'Something went wrong. Please try again.', status: 'error', duration: 4000, isClosable: true });
+      toast({ title: err.message || 'Something went wrong. Please try again.', status: 'error', duration: 4000, isClosable: true })
     }
   };
 
@@ -155,7 +155,7 @@ export function Contact() {
               <FormControl isRequired isInvalid={!validPhone}>
                 <FormLabel fontSize="0.75rem" fontWeight={500} letterSpacing="0.08em" textTransform="uppercase" color="mid">Phone</FormLabel>
                 <InputGroup>
-                  <InputLeftAddon>+1</InputLeftAddon>
+                  <InputLeftAddon bg="cream" borderColor="border" color="mid" fontSize="0.88rem" borderRadius="2px">+1</InputLeftAddon>
                   <InputMask
                     mask="(999) 999-9999"
                     value={form.phone}
@@ -170,6 +170,8 @@ export function Contact() {
                         {...inputProps}
                         type="tel"
                         placeholder="(123) 456-7890"
+                        {...fieldStyles}
+                        borderLeftRadius={0}
                       />
                     )}
                   </InputMask>

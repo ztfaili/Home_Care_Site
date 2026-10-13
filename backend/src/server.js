@@ -10,15 +10,33 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-app.use(express.json()); // middleware function; allows us to accept JSON data in the req.body as an object
-app.use(cors({
-  origin: 'http://localhost:5173' // allow requests from your frontend origin
-}));
-  
+// Render sits behind a proxy; needed so rate limiting sees real client IPs
+app.set("trust proxy", 1);
+
+// Comma-separated list in env, e.g.
+// CORS_ORIGINS=https://daisyhillshomecare.com,https://www.daisyhillshomecare.com
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
+  .split(",")
+  .map((s) => s.trim());
+
+app.use(express.json({ limit: "10kb" }));
+app.use(
+  cors({
+    origin(origin, cb) {
+      // no Origin header = curl/health checks/server-to-server
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      console.warn("Blocked by CORS:", origin);
+      return cb(new Error("Not allowed by CORS"));
+    },
+  })
+);
+
+// Render health check
+app.get("/health", (req, res) => res.status(200).send("ok"));
+
 app.use("/api/contact", contactRoutes);
 
-
-app.listen(PORT, () => {
-  connectDB();
-  console.log("Server started at http://localhost:" + PORT);
+// Connect to the DB first, then start listening
+connectDB().then(() => {
+  app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 });
