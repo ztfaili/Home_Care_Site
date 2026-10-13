@@ -16,6 +16,8 @@ const transporter = nodemailer.createTransport({
   connectionTimeout: 10000,
   greetingTimeout: 10000,
   socketTimeout: 15000,
+  logger: true,
+  debug: true,
 });
 
 export default async function sendEmail({ to, subject, text }) {
