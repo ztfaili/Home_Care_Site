@@ -18,6 +18,7 @@
     "express-rate-limit": "^8.7.1",
     "mongoose": "^8.17.1",
     "nodemailer": "^7.0.6",
+    "resend": "^6.32.1",
     "stripe": "^19.1.0",
     "twilio": "^5.10.2"
   },
