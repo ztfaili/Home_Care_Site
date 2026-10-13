@@ -15,6 +15,8 @@ export const createContact = async (newContact) => {
   }
 
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.message || "Something went wrong. Please try again.");
+  if (!res.ok || data.success !== true) {
+    throw new Error(data.message || "Something went wrong. Please try again.");
+  }
   return data;
 };
