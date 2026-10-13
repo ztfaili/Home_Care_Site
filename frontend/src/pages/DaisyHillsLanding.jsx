@@ -8,6 +8,7 @@ import { useState } from 'react';
 import {
   Box,
   Flex,
+  Image,
   Grid,
   GridItem,
   SimpleGrid,
@@ -28,6 +29,8 @@ import {
   Container,
 } from '@chakra-ui/react';
 import Reveal from './Reveal';
+import daisy from '../images/daisy.png'; 
+
 
 // ---------- shared bits ----------
 
@@ -247,19 +250,25 @@ function Hero() {
           w="85%"
           boxShadow="0 20px 60px rgba(0,0,0,0.25)"
         >
-          <Flex
+          {/* <Flex
             w="68px"
             h="68px"
-            bg="rgba(255,255,255,0.25)"
+            // bg="rgba(255,255,255,0.25)"
             borderRadius="50%"
             align="center"
             justify="center"
             mb={5}
             fontSize="2rem"
-            boxShadow="0 4px 16px rgba(0,0,0,0.15)"
-          >
-            🌼
-          </Flex>
+            // boxShadow="0 4px 16px rgba(0,0,0,0.15)"
+          > */}
+            <Image 
+              src={daisy}
+              alt="Daisy image" 
+              boxSize="100%"
+              objectFit="cover" 
+              borderRadius="md"
+            />
+          {/* </Flex> */}
           <Heading as="h3" fontFamily="heading" fontSize="2.2rem" fontWeight={600} color="white" mb={4} lineHeight={1.15} textShadow="0 2px 8px rgba(0,0,0,0.2)">
             Care That Comes to You
           </Heading>
